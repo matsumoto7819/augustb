@@ -4,27 +4,29 @@
       <div class="form-group">
         <label for="field-mail">メールアドレス</label><br>
         <input
-        type="email"
-        class="form-input"
-        name="entry.1690932799"
-        id="field-mail"
-        maxlength="254"
-        required
+          v-model="email"
+          type="email"
+          class="form-input"
+          name="entry.1690932799"
+          id="field-mail"
+          maxlength="254"
+          required
         >
       </div>
       <div class="form-group">
         <label for="field-mail">パスワード</label><br>
         <input
-        type="passward"
-        class="form-input"
-        name="entry.1690932799"
-        id="field-mail"
-        maxlength="254"
-        required
+          v-model="password"
+          type="password"
+          class="form-input"
+          name="entry.1690932799"
+          id="field-mail"
+          maxlength="254"
+          required
         >
       </div>
       <div class="login-item">
-        <button class="login-button" @click="myStore.increment">ログイン</button>
+        <button class="login-button" @click="login">ログイン</button>
       </div>
       <div class="security-item">
         <button class="for-security" type="submit">パスワードを忘れた方</button>
@@ -32,7 +34,22 @@
   </main>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
+import { useUserStore } from '@/store/userStore.js'
+import router from '@/router'
+
+const userStore = useUserStore()
+const email = ref('')
+const password = ref('')
+
+const login = async () => {
+  await userStore.login(email.value, password.value).then(() => {
+    router.push({ name: 'home' })
+  }).catch((e) => {
+    alert(e)
+  })
+}
 </script>
 
 <style scoped>
